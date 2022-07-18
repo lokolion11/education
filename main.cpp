@@ -1,26 +1,25 @@
-#include <iostream>
-#include <vector>
-#include <dirent.h>
-
-using std::cout; using std::cin;
-using std::endl; using std::vector;
-
+#include <QTextStream>
+#include <QFileInfo>
+#include <QDir>
 int main() {
-    DIR *dir; struct dirent *diread;
-    vector<char *> files;
 
-    if ((dir = opendir("/home/nahem/")) != nullptr) {
-        while ((diread = readdir(dir)) != nullptr) {
-            files.push_back(diread->d_name);
-        }
-        closedir (dir);
-    } else {
-        perror ("opendir");
-        return EXIT_FAILURE;
-    }
+  QTextStream out{stdout};
 
-    for (auto file : files) cout << file << "| ";
-    cout << endl;
 
-    return EXIT_SUCCESS;
+  QDir dir{"/home/nahem"};
+  QFileInfoList list = dir.entryInfoList();
+  for (QFileInfo finfo: list) {
+      QString name = finfo.fileName();
+  }
+
+
+  for (int i = 0; i < list.size(); ++i) {
+
+    QFileInfo fileInfo = list.at(i);
+    QString str = fileInfo.fileName();
+    str.append(QString());
+    out << str << endl;
+  }
+
+  return 0;
 }
